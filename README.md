@@ -1,5 +1,3 @@
-
-
 # FastAPI Weather Information API
 
 A simple FastAPI application for fetching and processing weather information using METAR data.
