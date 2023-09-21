@@ -41,7 +41,7 @@ Before you can run the FastAPI Weather Information API, make sure you have the f
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/fastapi-weather-app.git
+   git clone https://github.com/Aakaaaassh/fastapi-weather-app.git
    cd fastapi-weather-app
 
 
@@ -56,11 +56,11 @@ Before you can run the FastAPI Weather Information API, make sure you have the f
 4. Start the FastAPI application:
 
    ```bash
-   python main.py
+   python Metar.py
    or
-   uvicorn main:app
+   uvicorn Metar:app
    or
-   uvicorn main:app --reload
+   uvicorn Metar:app --reload
    ```
 
 The API should now be running at `http://127.0.0.1:8080`.
