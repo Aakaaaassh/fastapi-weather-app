@@ -142,6 +142,10 @@ def get_weather_info(station_code):
     return None
 
 # API Endpoints
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the FastAPI Weather App!"}
+
 @app.get("/metar/ping")
 async def ping():
     return {"data": "pong"}
