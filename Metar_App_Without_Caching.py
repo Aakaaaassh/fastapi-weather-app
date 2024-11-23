@@ -65,7 +65,7 @@ def WV(string):
 def PV(string):
     if "SM" in string:
         res = string[:-2]
-        return f"{res} statute mile"
+        return f"Prevailing Visibility around {res} statute mile"
 
 # Temperature and Dewpoint
 def TAD(string):
@@ -182,6 +182,9 @@ def parse_metar_data(metar_text):
                 SLP,Dec = i[3:5],i[5]
                 raw_data["Data"]['sea level'] = f"Current sea level pressure of 10{SLP}.{Dec} millibars"
             Udata.remove(i)
+        if len(i) == 4:
+            if ord(i[0]) in range(48,58) and ord(i[1]) in range(48,58) and ord(i[2]) in range(48,58) and ord(i[3]) in range(48,58):
+                raw_data['Data']['prevailing visibility'] = f"Prevailing Visibility around {i} meters" 
     raw_data["Unprocessed Data"] = Udata
     return raw_data
 
