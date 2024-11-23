@@ -93,7 +93,7 @@ def main():
             st.markdown(f"**Altimeter Setting:** {altimeter}")
 
             # Sea Level
-            sealevel = response("Data").get('sea level',"N/A")
+            sealevel = response["Data"].get('sea level',"N/A")
             st.markdown(f"**Sea Level:** {sealevel} if sealevel else 'No sea data'")
             
 
