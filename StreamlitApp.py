@@ -112,11 +112,11 @@ def main():
             # Observation Types
             ObservationTypeAuto = response['Data'].get('observation_type_AUTO', "N/A")
             if ObservationTypeAuto != "N/A":
-                st.markdown(f"**Observation Type:** 'Automated Observation'")
+                st.markdown(f"**Observation Type:** Automated Observation")
             
             ObservationTypeCorr = response['Data'].get('observation_type_COR','N/A')
             if ObservationTypeCorr != "N/A":
-                st.markdown(f"**Observation Type:** 'Corrected Observation'")
+                st.markdown(f"**Observation Type:** Corrected Observation")
             
             # Observation
             Observation_AO1 = response["Data"].get("observation_AO1","N/A")
