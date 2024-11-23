@@ -90,9 +90,14 @@ def Clouds(string):
         ans = "Broken "
     elif string[:3] == "OVC":
         ans = "Overcast "
-    dig = int(string[3:])
+    dig = int(string[3:6])
     dig = str(dig) + "00"
-    return ans + dig + " Feet AGL"
+    if string[6:8] == 'CB':
+        return ans + dig + " Feet AGL" + 'with cloud type Cumulonimbus'
+    elif string[6:9] == 'TCU':
+        return ans + dig + " Feet AGL" + 'with cloud type Towering Cumulus'
+    else:
+        return ans + dig + " Feet AGL" 
 
 # Altimeter Setting
 def AS(string):
@@ -143,10 +148,14 @@ def parse_metar_data(metar_text):
             raw_data['Data']["temperature and dewpoint"] = TAD(i)
             Udata.remove(i)
         if i[:3] in ["SKC", "FEW", "SCT", "BKN", "OVC"]:
-            if "Cloud Layers" not in raw_data['Data']:
+            if "cloud layers" not in raw_data['Data']:
                 raw_data['Data']["cloud layers"] = []
-            raw_data['Data']["cloud layers"].append(Clouds(i))
-            Udata.remove(i)
+                cloud = []
+            if i not in cloud:
+                cloud.append(i)
+                raw_data["Data"]["cloud layers"].append(Clouds(i))
+                Udata.remove(i)
+            
         if i == 'AUTO':
             raw_data['Data']['observation_type_AUTO'] = 'automated observation'
             Udata.remove(i)
@@ -173,7 +182,6 @@ def parse_metar_data(metar_text):
                 SLP,Dec = i[3:5],i[5]
                 raw_data["Data"]['sea level'] = f"Current sea level pressure of 10{SLP}.{Dec} millibars"
             Udata.remove(i)
-    
     raw_data["Unprocessed Data"] = Udata
     return raw_data
 
