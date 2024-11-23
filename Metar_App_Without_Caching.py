@@ -8,6 +8,15 @@ app = FastAPI()
 # In-memory cache for demonstration purposes
 cache = {}
 
+# Day and Time
+def Check_day_time(string):
+    if len(string) == 7 and string[-1] == 'Z':
+        Day = string[:2]
+        Time = string[2:4] + ":" + string[4:6] + " UTC"
+        return Day , Time
+    else:
+        return None
+
 # Wind Direction
 def WD(string):
     degree = int(string)
@@ -25,21 +34,25 @@ def WDV(string):
     if len(string) == 6:
         degree = string[:2]
         speed = string[2:4]
-        return f"wind is blowing from {degree} degrees (true) at a sustained speed of {speed} knots"
+        Direction = WD(degree)
+        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
     elif len(string) == 7:
         degree = string[:3]
         speed = string[3:5]
-        return f"wind is blowing from {degree} degrees (true) at a sustained speed of {speed} knots"
+        Direction = WD(degree)
+        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
     elif len(string) == 9 and string[4] == "G":
         degree = string[:2]
         speed = string[2:4]
+        Direction = WD(degree)
         gust = string[5:7]
-        return f"wind is blowing from {degree} degrees (true) at a sustained speed of {speed} knots with {gust}-knot gusts."
+        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
     elif len(string) == 10 and string[5] == "G":
         degree = string[:3]
         speed = string[3:5]
+        Direction = WD(degree)
         gust = string[6:8]
-        return f"wind is blowing from {degree} degrees (true) at a sustained speed of {speed} knots with {gust}-knot gusts."
+        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
 
 # Wind Variability
 def WV(string):
@@ -57,13 +70,13 @@ def PV(string):
 # Temperature and Dewpoint
 def TAD(string):
     if len(string) == 5 and ord(string[2]) == 47:
-        return f"{string[:2]} is the temperature in degrees Celsius and {string[3:]} is the dewpoint in degrees Celsius."
+        return f"the temperature is {string[:2]}° degrees Celsius and the dewpoint is {string[3:]}° degrees Celsius."
     elif len(string) == 6 and ord(string[2]) == 47 and ord(string[3]) == 77:
-        return f"{string[:2]} is the temperature in degrees Celsius and {string[3:]} is the dewpoint in Minus degrees Celsius."
+        return f"the temperature is {string[:2]}° degrees Celsius and the dewpoint is -{string[4:]}° degrees Celsius."
     elif len(string) == 6 and ord(string[3]) == 47 and ord(string[0]) == 77:
-        return f"{string[:3]} is the temperature in Minus degrees Celsius and {string[4:]} is the dewpoint in degrees Celsius."
+        return f"the temperature is -{string[1:3]}° degrees Celsius and the dewpoint is {string[4:]}° degrees Celsius."
     elif len(string) == 7 and ord(string[3]) == 47 and ord(string[0]) == 77 and ord(string[4]) == 77:
-        return f"{string[:3]} is the temperature in Minus degrees Celsius and {string[4:]} is the dewpoint in Minus degrees Celsius."
+        return f"the temperature is -{string[1:3]}° degrees Celsius and the dewpoint is -{string[5:]}° degrees Celsius."
 
 # Cloud Layers
 def Clouds(string):
@@ -104,33 +117,63 @@ def parse_metar_data(metar_text):
     raw_data = {}
     raw_data['Data'] = {}
     data = metar_text.split()
+    Day,Time = Check_day_time(data[3])
     Udata = data[4:]
-    raw_data['Data']['station'] = data[2]
+    raw_data['Data']['station code'] = data[2]
+    raw_data['Data']['current day'] = Day
+    raw_data['Data']['current time'] = Time
     raw_data['Data']['last observation'] = data[0] + " at " + data[1] + " GMT"
     for i in data[3:]:
         if i in ["METAR", "SPECI"]:
-            raw_data['Data']["Report Type"] = "Aviation Routine Weather Report" if i == "METAR" else "Special Report"
+            raw_data['Data']["report type"] = "Aviation Routine Weather Report" if i == "METAR" else "Special Report"
             Udata.remove(i)
         if "NOSIG" in i:
-            raw_data['Data']['Remarks Overseas'] = "no significant changes"
+            raw_data['Data']['remarks overseas'] = "no significant changes"
             Udata.remove(i)
         if "KT" in i:
             raw_data['Data']['wind'] = WDV(i)
             Udata.remove(i)
         if "SM" in i:
-            raw_data['Data']['prevailing_visibility'] = PV(i)
+            raw_data['Data']['prevailing visibility'] = PV(i)
             Udata.remove(i)
         if ord(i[0]) == 65 and len(i) == 5 or ord(i[0]) == 81 and len(i) == 5:
             raw_data['Data']["altimeter setting"] = AS(i)
             Udata.remove(i)
-        if len(i) == 5 and ord(i[2]) == 47:
-            raw_data['Data']["Temperature and Dewpoint"] = TAD(i)
+        if (len(i) == 5 and ord(i[2]) == 47) or (len(i) == 6 and ord(i[2]) == 47) or (len(i) == 6 and ord(i[3]) == 47) or (len(i) == 7 and ord(i[3]) == 47):
+            raw_data['Data']["temperature and dewpoint"] = TAD(i)
             Udata.remove(i)
         if i[:3] in ["SKC", "FEW", "SCT", "BKN", "OVC"]:
             if "Cloud Layers" not in raw_data['Data']:
-                raw_data['Data']["Cloud Layers"] = []
-            raw_data['Data']["Cloud Layers"].append(Clouds(i))
+                raw_data['Data']["cloud layers"] = []
+            raw_data['Data']["cloud layers"].append(Clouds(i))
             Udata.remove(i)
+        if i == 'AUTO':
+            raw_data['Data']['observation_type_AUTO'] = 'automated observation'
+            Udata.remove(i)
+        if i == 'COR':
+            raw_data['Data']['observation_type_COR'] = 'corrected observation'
+            Udata.remove(i)
+        if i == 'AO1':
+            raw_data['Data']['observation_AO1'] = 'observation taken by equipment lacking a precipitation type discriminator (rain vs. snow)'
+            Udata.remove(i)
+        if i == 'AO2':
+            raw_data['Data']['observation_AO2'] = 'observation taken by standard equipment with a full complement of sensors'
+            Udata.remove(i)
+        if i == 'AO2A':
+            raw_data['Data']['observation_AO2A'] = 'automated observation augmented by a human observer'
+            Udata.remove(i)
+        if i == 'RMK':
+            raw_data["Data"]['remark'] = "Remark"
+            Udata.remove(i)
+        if len(i) == 6 and i[0:3] == 'SLP':
+            if i[3] in ['5','6','7','8','9']:
+                SLP,Dec = i[3:5],i[5]
+                raw_data["Data"]['sea level'] = f"Current sea level pressure of 9{SLP}.{Dec} millibars"
+            elif i[3] in ['0','1','2','3','4']:
+                SLP,Dec = i[3:5],i[5]
+                raw_data["Data"]['sea level'] = f"Current sea level pressure of 10{SLP}.{Dec} millibars"
+            Udata.remove(i)
+    
     raw_data["Unprocessed Data"] = Udata
     return raw_data
 
