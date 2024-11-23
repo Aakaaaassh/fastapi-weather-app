@@ -35,31 +35,31 @@ def WDV(string):
         degree = string[:2]
         speed = string[2:4]
         Direction = WD(degree)
-        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
+        return f"Wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
     elif len(string) == 7:
         degree = string[:3]
         speed = string[3:5]
         Direction = WD(degree)
-        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
+        return f"Wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots"
     elif len(string) == 9 and string[4] == "G":
         degree = string[:2]
         speed = string[2:4]
         Direction = WD(degree)
         gust = string[5:7]
-        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
+        return f"Wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
     elif len(string) == 10 and string[5] == "G":
         degree = string[:3]
         speed = string[3:5]
         Direction = WD(degree)
         gust = string[6:8]
-        return f"wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
+        return f"Wind is blowing from {Direction}, {degree} to be precise at a sustained speed of {speed} knots with {gust}-knot gusts."
 
 # Wind Variability
 def WV(string):
     if (len(string) == 5 or len(string) == 6) and ord(string[2]) == 86:
-        return f"wind direction varying between {string[:2]} and {string[3:]}"
+        return f"Wind direction varying between {string[:2]} and {string[3:]}"
     elif (len(string) == 6 or len(string) == 7) and ord(string[3]) == 86:
-        return f"wind direction varying between {string[:3]} and {string[4:]}"
+        return f"Wind direction varying between {string[:3]} and {string[4:]}"
 
 # Prevailing Visibility
 def PV(string):
@@ -70,13 +70,13 @@ def PV(string):
 # Temperature and Dewpoint
 def TAD(string):
     if len(string) == 5 and ord(string[2]) == 47:
-        return f"the temperature is {string[:2]}° degrees Celsius and the dewpoint is {string[3:]}° degrees Celsius."
+        return f"Temperature is {string[:2]}° Celsius and the Dewpoint is {string[3:]}° Celsius."
     elif len(string) == 6 and ord(string[2]) == 47 and ord(string[3]) == 77:
-        return f"the temperature is {string[:2]}° degrees Celsius and the dewpoint is -{string[4:]}° degrees Celsius."
+        return f"Temperature is {string[:2]}° Celsius and the Dewpoint is -{string[4:]}° Celsius."
     elif len(string) == 6 and ord(string[3]) == 47 and ord(string[0]) == 77:
-        return f"the temperature is -{string[1:3]}° degrees Celsius and the dewpoint is {string[4:]}° degrees Celsius."
+        return f"Temperature is -{string[1:3]}° Celsius and the Dewpoint is {string[4:]}° Celsius."
     elif len(string) == 7 and ord(string[3]) == 47 and ord(string[0]) == 77 and ord(string[4]) == 77:
-        return f"the temperature is -{string[1:3]}° degrees Celsius and the dewpoint is -{string[5:]}° degrees Celsius."
+        return f"Temperature is -{string[1:3]}° Celsius and the Dewpoint is -{string[5:]}° Celsius."
 
 # Cloud Layers
 def Clouds(string):
@@ -102,9 +102,9 @@ def Clouds(string):
 # Altimeter Setting
 def AS(string):
     if ord(string[0]) == 65 and len(string) == 5:
-        return f"current altimeter setting of {string[1:3]}.{string[3:]} inches Hg."
+        return f"Current Altimeter Setting of {string[1:3]}.{string[3:]} inches Hg."
     if ord(string[0]) == 81 and len(string) == 5:
-        return f"current altimeter setting of {string[1:]} hPa or {string[1:]} mb."
+        return f"Current Altimeter Setting of {string[1:]} hPa or {string[1:]} mb."
 
 # Fetch Weather Information
 def fetch_metar_data(station_code):
@@ -133,7 +133,7 @@ def parse_metar_data(metar_text):
             raw_data['Data']["report type"] = "Aviation Routine Weather Report" if i == "METAR" else "Special Report"
             Udata.remove(i)
         if "NOSIG" in i:
-            raw_data['Data']['remarks overseas'] = "no significant changes"
+            raw_data['Data']['remarks overseas'] = "No significant changes"
             Udata.remove(i)
         if "KT" in i:
             raw_data['Data']['wind'] = WDV(i)
@@ -157,19 +157,19 @@ def parse_metar_data(metar_text):
                 Udata.remove(i)
             
         if i == 'AUTO':
-            raw_data['Data']['observation_type_AUTO'] = 'automated observation'
+            raw_data['Data']['observation_type_AUTO'] = 'Automated observation'
             Udata.remove(i)
         if i == 'COR':
-            raw_data['Data']['observation_type_COR'] = 'corrected observation'
+            raw_data['Data']['observation_type_COR'] = 'Corrected observation'
             Udata.remove(i)
         if i == 'AO1':
-            raw_data['Data']['observation_AO1'] = 'observation taken by equipment lacking a precipitation type discriminator (rain vs. snow)'
+            raw_data['Data']['observation_AO1'] = 'Observation taken by equipment lacking a precipitation type discriminator (rain vs. snow)'
             Udata.remove(i)
         if i == 'AO2':
-            raw_data['Data']['observation_AO2'] = 'observation taken by standard equipment with a full complement of sensors'
+            raw_data['Data']['observation_AO2'] = 'Observation taken by standard equipment with a full complement of sensors'
             Udata.remove(i)
         if i == 'AO2A':
-            raw_data['Data']['observation_AO2A'] = 'automated observation augmented by a human observer'
+            raw_data['Data']['observation_AO2A'] = 'Automated observation augmented by a human observer'
             Udata.remove(i)
         if i == 'RMK':
             #raw_data["Data"]['remark'] = "Remark"
@@ -199,7 +199,7 @@ def get_weather_info(station_code):
 # API Endpoints
 @app.get("/")
 async def root():
-    return {"message": "Welcome to the FastAPI Weather App!"}
+    return {"message": "Welcome to the METAR Code Translater App!"}
 
 @app.get("/metar/ping")
 async def ping():
