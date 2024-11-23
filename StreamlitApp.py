@@ -40,7 +40,6 @@ def main():
     # Sidebar configuration
     st.sidebar.header("Configuration")
     api_url = "https://fastapi-weather-app.onrender.com/metar/processed"
-    #api_url = st.sidebar.text_input("Enter API URL:", default_api_url)
 
     st.sidebar.write("Fetching station names...")
     stations = fetch_station_names()  # Fetch station names dynamically
@@ -62,43 +61,53 @@ def main():
 
             # Display Station and Observation Details
             station = response["Data"].get("station code", "N/A")
+            if station != "N/A":
+                st.markdown(f"**Station:** {station}")
+
             observation = response["Data"].get("last observation", "N/A")
+            if observation != "N/A":
+                st.markdown(f"**Last Observation:** {observation}")
+
             current_day = response["Data"].get("current day", "N/A")
+            if current_day != "N/A":
+                st.markdown(f"**Day:** {current_day}")
+
             current_time = response["Data"].get("current time", "N/A")
-            st.markdown(f"**Station:** {station}")
-            st.markdown(f"**Last Observation:** {observation}")
-            st.markdown(f"**Day:** {current_day}")
-            st.markdown(f"**Time:** {current_time}")
-            
+            if current_time != "N/A":
+                st.markdown(f"**Time:** {current_time}")
 
             # Display Wind Information
             wind = response["Data"].get("wind", "N/A")
-            st.markdown(f"**Wind:** {wind}")
+            if wind != "N/A":
+                st.markdown(f"**Wind:** {wind}")
 
             # Display Visibility
             visibility = response["Data"].get("prevailing visibility", "N/A")
-            st.markdown(f"**Visibility:** {visibility}")
+            if visibility != "N/A":
+                st.markdown(f"**Visibility:** {visibility}")
 
             # Temperature and Dewpoint
-            Temp_dew = response["Data"].get('temperature and dewpoint',"N/A")
-            st.markdown(f"**Temperature & Dewpoint:** {Temp_dew}")
+            Temp_dew = response["Data"].get("temperature and dewpoint", "N/A")
+            if Temp_dew != "N/A":
+                st.markdown(f"**Temperature & Dewpoint:** {Temp_dew}")
 
             # Display Cloud Layers
             cloud_layers = response["Data"].get("cloud layers", "N/A")
             if isinstance(cloud_layers, list) and cloud_layers:  # Check if it's a non-empty list
                 st.markdown("**Cloud Layers:** ")
                 st.write("\n".join([f"- {cloud}" for cloud in cloud_layers]))
-            else:
-                st.markdown("**Cloud Layers:** N/A")  # Display N/A if empty or not a list
+            elif cloud_layers == "N/A":
+                st.markdown("**Cloud Layers:** N/A")
 
             # Display Altimeter Setting
             altimeter = response["Data"].get("altimeter setting", "N/A")
-            st.markdown(f"**Altimeter Setting:** {altimeter}")
+            if altimeter != "N/A":
+                st.markdown(f"**Altimeter Setting:** {altimeter}")
 
             # Sea Level
-            sealevel = response["Data"].get('sea level',"N/A")
-            st.markdown(f"**Sea Level:** {sealevel}")
-            
+            sealevel = response["Data"].get("sea level", "N/A")
+            if sealevel != "N/A":
+                st.markdown(f"**Sea Level:** {sealevel}")
 
 if __name__ == "__main__":
     main()
