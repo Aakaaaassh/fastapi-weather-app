@@ -109,5 +109,30 @@ def main():
             if sealevel != "N/A":
                 st.markdown(f"**Sea Level:** {sealevel}")
 
+            # Observation Types
+            ObservationTypeAuto = response['Data'].get('observation_type_AUTO', "N/A")
+            if ObservationTypeAuto != "N/A":
+                st.markdown(f"**Observation Type:** 'Automated Observation'")
+            
+            ObservationTypeCorr = response['Data'].get('observation_type_COR','N/A')
+            if ObservationTypeCorr != "N/A":
+                st.markdown(f"**Observation Type:** 'Corrected Observation'")
+            
+            # Observation
+            Observation_AO1 = response["Data"].get("observation_AO1","N/A")
+            if Observation_AO1 != "N/A":
+                st.markdown(f"**AO1 Observation** {Observation_AO1}")
+            
+            Observation_AO2 = response["Data"].get("observation_AO2","N/A")
+            if Observation_AO2 != "N/A":
+                st.markdown(f"**AO2 Observation** {Observation_AO2}")
+
+            Observation_AO2A = response["Data"].get("observation_AO2A","N/A")
+            if Observation_AO2A != "N/A":
+                st.markdown(f"**AO2A Observation** {Observation_AO2A}")
+
+            
+
+
 if __name__ == "__main__":
     main()
