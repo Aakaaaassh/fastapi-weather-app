@@ -57,7 +57,7 @@ def main():
         data = fetch_data(full_url)
         if data and "Response" in data:
             response = data["Response"]
-            st.subheader("Weather Details")
+            st.subheader("Processed Weather Details")
 
             # Display Station and Observation Details
             station = response["Data"].get("station code", "N/A")
