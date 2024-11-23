@@ -35,7 +35,7 @@ def fetch_data(api_url):
 
 # Streamlit App
 def main():
-    st.title("Weather Data Visualization")
+    st.title("METAR Code Translater")
 
     # Sidebar configuration
     st.sidebar.header("Configuration")
