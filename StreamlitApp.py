@@ -76,17 +76,27 @@ def main():
             st.markdown(f"**Wind:** {wind}")
 
             # Display Visibility
-            visibility = response["Data"].get("prevailing_visibility", "N/A")
+            visibility = response["Data"].get("prevailing visibility", "N/A")
             st.markdown(f"**Visibility:** {visibility}")
 
+            # Temperature and Dewpoint
+            Temp_dew = response["Data"].get('temperature and dewpoint',"N/A")
+            st.markdown(f"**Temperature & Dewpoint:** {Temp_dew}")
+
             # Display Cloud Layers
-            cloud_layers = response["Data"].get("Cloud Layers", [])
+            cloud_layers = response["Data"].get("cloud layers", "N/A")
             st.markdown("**Cloud Layers:**")
             st.write("\n".join([f"- {cloud}" for cloud in cloud_layers]) if cloud_layers else "No cloud data.")
 
             # Display Altimeter Setting
             altimeter = response["Data"].get("altimeter setting", "N/A")
             st.markdown(f"**Altimeter Setting:** {altimeter}")
+
+            # Sea Level
+            sealevel = response("Data").get('sea level',"N/A")
+            st.markdown(f"**Sea Level:** {sealevel}")
+
+            
 
 if __name__ == "__main__":
     main()
