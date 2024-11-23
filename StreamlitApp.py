@@ -61,10 +61,15 @@ def main():
             st.subheader("Weather Details")
 
             # Display Station and Observation Details
-            station = response["Data"].get("station", "N/A")
+            station = response["Data"].get("station code", "N/A")
             observation = response["Data"].get("last observation", "N/A")
+            current_day = response["Data"].get("current day", "N/A")
+            current_time = response["Data"].get("current time", "N/A")
             st.markdown(f"**Station:** {station}")
             st.markdown(f"**Last Observation:** {observation}")
+            st.markdown(f"**Day:** {current_day}")
+            st.markdown(f"**Time:** {current_time}")
+            
 
             # Display Wind Information
             wind = response["Data"].get("wind", "N/A")
