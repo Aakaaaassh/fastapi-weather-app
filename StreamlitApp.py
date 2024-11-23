@@ -94,7 +94,8 @@ def main():
 
             # Sea Level
             sealevel = response("Data").get('sea level',"N/A")
-            st.markdown(f"**Sea Level:** {sealevel}")
+            st.markdown(f"**Sea Level:**")
+            st.write({sealevel} if sealevel else "No sea data")
 
             
 
