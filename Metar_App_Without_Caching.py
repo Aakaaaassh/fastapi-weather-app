@@ -163,16 +163,16 @@ def parse_metar_data(metar_text):
             raw_data['Data']['observation_type_COR'] = 'corrected observation'
             Udata.remove(i)
         if i == 'AO1':
-            raw_data['Data']['observation_AO1'] = 'observation taken by equipment lacking a precipitation type discriminator (rain vs. snow)'
+            raw_data['Data']['observation_AO1'] = 'Remark: observation taken by equipment lacking a precipitation type discriminator (rain vs. snow)'
             Udata.remove(i)
         if i == 'AO2':
-            raw_data['Data']['observation_AO2'] = 'observation taken by standard equipment with a full complement of sensors'
+            raw_data['Data']['observation_AO2'] = 'Remark: observation taken by standard equipment with a full complement of sensors'
             Udata.remove(i)
         if i == 'AO2A':
-            raw_data['Data']['observation_AO2A'] = 'automated observation augmented by a human observer'
+            raw_data['Data']['observation_AO2A'] = 'Remark: automated observation augmented by a human observer'
             Udata.remove(i)
         if i == 'RMK':
-            raw_data["Data"]['remark'] = "Remark"
+            #raw_data["Data"]['remark'] = "Remark"
             Udata.remove(i)
         if len(i) == 6 and i[0:3] == 'SLP':
             if i[3] in ['5','6','7','8','9']:
