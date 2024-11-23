@@ -185,6 +185,7 @@ def parse_metar_data(metar_text):
         if len(i) == 4:
             if ord(i[0]) in range(48,58) and ord(i[1]) in range(48,58) and ord(i[2]) in range(48,58) and ord(i[3]) in range(48,58):
                 raw_data['Data']['prevailing visibility'] = f"Prevailing Visibility around {i} meters" 
+                Udata.remove(i)
     raw_data["Unprocessed Data"] = Udata
     return raw_data
 
