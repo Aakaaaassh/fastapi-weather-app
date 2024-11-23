@@ -85,8 +85,11 @@ def main():
 
             # Display Cloud Layers
             cloud_layers = response["Data"].get("cloud layers", "N/A")
-            st.markdown("**Cloud Layers:**")
-            st.write("\n".join([f"- {cloud}" for cloud in cloud_layers]) if cloud_layers else "No cloud data.")
+            if isinstance(cloud_layers, list) and cloud_layers:  # Check if it's a non-empty list
+                st.markdown("**Cloud Layers:** ")
+                st.write("\n".join([f"- {cloud}" for cloud in cloud_layers]))
+            else:
+                st.markdown("**Cloud Layers:** N/A")  # Display N/A if empty or not a list
 
             # Display Altimeter Setting
             altimeter = response["Data"].get("altimeter setting", "N/A")
