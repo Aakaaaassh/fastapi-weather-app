@@ -7,6 +7,7 @@ A simple FastAPI application for fetching and processing weather information usi
 - The screenshot below shows the FastAPI backend successfully deployed and running on Render. 
 - The ```/metar/ping``` endpoint confirms the API is live and operational.
 - URL: [https://fastapi-weather-app.onrender.com](https://fastapi-weather-app.onrender.com)
+- Note : It takes 50+ seconds to relaunch the server if it gets shut down due to inactivity.
   
 ![Screenshot (5)](https://github.com/user-attachments/assets/346d5c10-8d84-4642-9e57-83774a30eee5)
 
