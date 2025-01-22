@@ -2,6 +2,28 @@
 
 A simple FastAPI application for fetching and processing weather information using METAR data.
 
+
+## FastAPI Backend Deployed on Render
+- The screenshot below shows the FastAPI backend successfully deployed and running on Render. 
+- The ```/metar/ping``` endpoint confirms the API is live and operational.
+- URL: [https://fastapi-weather-app.onrender.com](https://fastapi-weather-app.onrender.com)
+  
+![Screenshot (5)](https://github.com/user-attachments/assets/346d5c10-8d84-4642-9e57-83774a30eee5)
+
+## Streamlit Frontend - Raw METAR Data Fetch
+- This screenshot demonstrates the Streamlit frontend's functionality for fetching raw METAR data using a station code.
+- It communicates with the FastAPI backend to retrieve the raw data.
+- URL: [https://metar-code-translater.streamlit.app/](https://metar-code-translater.streamlit.app/)
+  
+![Screenshot (4)](https://github.com/user-attachments/assets/cf3a3fff-4ce8-4c2c-a6b3-4dec19bbef26)
+
+## Streamlit Frontend - Processed Weather Information
+- The screenshot showcases the processed weather information for a specific station code.
+- It uses the FastAPI backend to extract and display weather details like wind speed and visibility.
+- URL: [https://metar-code-translater.streamlit.app/](https://metar-code-translater.streamlit.app/)
+  
+![Screenshot (3)](https://github.com/user-attachments/assets/f8ea7378-5c79-4e80-8aab-7111a0206a03)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -11,9 +33,8 @@ A simple FastAPI application for fetching and processing weather information usi
   - [Installation](#installation)
 - [Usage](#usage)
 - [Endpoints](#endpoints)
-  - [Ping](#ping)
   - [Raw Info](#raw-info)
-  - [Processed Info](#processed-info)
+  - [Processed Info](#processed)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -69,18 +90,8 @@ The API should now be running at `http://127.0.0.1:8080`.
 
 You can interact with the FastAPI Weather Information API using the provided endpoints. Here are the available endpoints:
 
-### Ping
 
-Check if the API is running.
-
-- **Endpoint:** `/metar/ping`
-- **HTTP Method:** GET
-
-Example:
-
-```bash
-curl http://127.0.0.1:8080/metar/ping
-```
+## Endpoints
 
 ### Raw Info
 
@@ -97,7 +108,7 @@ Example:
 curl http://127.0.0.1:8080/metar/Raw%20info?scode=KSGS
 ```
 
-### Processed Info
+### Processed
 
 Fetch processed weather information for a specific station code.
 
